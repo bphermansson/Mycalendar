@@ -6,13 +6,19 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
+import android.provider.Settings;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 
@@ -37,6 +43,16 @@ public class Main extends Activity {
     private static final int PROJECTION_DTSTART_INDEX = 5;
     private static final int PROJECTION_DTEND_INDEX = 6;
 
+    // For storing events data
+    Long[] eventsstart = new Long[20];
+    Long[] eventsend = new Long[20];
+    String[] eventsdesc = new String[20];
+    String eventsall[][] = new String[10][10];
+    String calstartdate;
+    String calenddate;
+    String calid;
+    Integer intcalid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +69,14 @@ public class Main extends Activity {
         String syear = String.valueOf(year);
         String sday = String.valueOf(day);
         Log.d("Today: ", syear + "-" + smonth  + "-" + sday);
+
+        // Find calendars
+        String calid[][];
+        calid = listCals();
+        //Integer len = calid[0].length;
+        //Log.d("Length;", String.valueOf(len));
+
+
 
         // Set week number in Gui
         Integer weeknow = calendar.get(Calendar.WEEK_OF_YEAR);
@@ -71,16 +95,55 @@ public class Main extends Activity {
         Integer weeknowreal=Integer.parseInt(info);
         String nextdate=findnextweek(weeknowreal);
 
-        // List Oskars events
+        // List  events
         // From http://developer.android.com/guide/topics/providers/calendar-provider.html
-        String calstartdate = date;
-        String calenddate = nextdate;
-        Log.d("Call: ", "caldatanow");
+        calstartdate = date;
+        calenddate = nextdate;
         //caldata(day, month, year, nextday, nextmonth, nextyear);
         //caldata(calstartdate,calenddate);
-        caldatanow(calstartdate,calenddate);
+        //caldatanow(calstartdate,calenddate);
+
+
+        // Populate dropdown
+        Spinner dropdown = (Spinner)findViewById(R.id.calSelect);
+        // Create array for data
+        final ArrayList<String> items = new ArrayList<String>();
+        String temp;
+        String selcalid="";
+        // Add items to array
+        for (int i = 0; i < calid.length; i++) {
+            Log.d("calendar1: ", calid[i][0]);
+            temp = calid[i][0] + "-" + calid[i][1];
+            items.add(temp);
+        }
+        // Add to spinner
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
+        dropdown.setAdapter(adapter);
+
+        // Selection event
+        dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
+
+                String selcal = items.get(position);
+                String[] selcalitem;
+                selcalitem = selcal.split("-");
+                // Get just the id
+                selcal = (selcalitem[0]);
+                intcalid = Integer.parseInt(selcal);
+                //Log.d("You've clicked: ", selcalid);
+                Log.d("Call: ", "caldatanow");
+                caldatanow(calstartdate,calenddate);
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
 
     }
+
+
 
     // Button prev clicked
     public void prevweek(View v) {
@@ -277,10 +340,11 @@ public class Main extends Activity {
     //                      Integer nextday, Integer nextmonth, Integer nextyear)
     public String caldatanow(String calstartdate, String calenddate)
     {
-        Log.d("In caldatanow: ", calstartdate +"-"+ calenddate);
+        // Here we go through the calendar and find events.
+        Log.d("In caldatanow: ", calstartdate +"-"+ calenddate + ". Calid= "+ intcalid);
 
         //Oskars calendar has id 12
-        String calendarID="12";
+        //String calendarID="12";
 
         // Split strings in year, month, day
         // Start date
@@ -303,15 +367,6 @@ public class Main extends Activity {
         Integer iedaydate=Integer.parseInt(sdaydate);
         Log.d("In caldatanow: ", "End date= "+ sdaydate);
 
-        // Find textviews
-        TextView txtact0 = (TextView)findViewById(R.id.act0);
-        TextView txtact1 = (TextView)findViewById(R.id.act1);
-        TextView txtact2 = (TextView)findViewById(R.id.act2);
-        TextView txtact3 = (TextView)findViewById(R.id.act3);
-        TextView txtact4 = (TextView)findViewById(R.id.act4);
-        TextView txtact5 = (TextView)findViewById(R.id.act5);
-        TextView txtact6 = (TextView)findViewById(R.id.act6);
-
         // Convert dates to epoch
         //http://pastebin.com/mw4fRJ3D
         Time t = new Time();
@@ -322,14 +377,17 @@ public class Main extends Activity {
         Log.d("caldata - Selection start: ", dtStart);
         Log.d("caldata - Selection end: ", dtEnd);
 
+        // Convert calenderid intcalid to string
+        String scalid = String.valueOf(intcalid);
+
         Cursor cur = null;
         ContentResolver cr = getContentResolver();
         Uri uri = CalendarContract.Events.CONTENT_URI;
 
         String myselection = "((" + CalendarContract.Events.DTSTART + " <= ?) AND (" + CalendarContract.Events.DTEND + " >= ?) AND (" + CalendarContract.Events.CALENDAR_ID + " = ?))";
-        String[] mysqlargs= new String[] {dtEnd, dtStart, calendarID};
+        String[] mysqlargs= new String[] {dtEnd, dtStart, scalid};
 
-        Log.d("In caldate", mysqlargs[0] +"-"+ mysqlargs[1]);
+        Log.d("In caldatanow", mysqlargs[0] +"-"+ mysqlargs[1]);
 
         cur = cr.query(
                 uri,
@@ -341,43 +399,130 @@ public class Main extends Activity {
         //Number of results
         Integer count = cur.getCount();
         String scount = String.valueOf(count);
-        Log.d("In caldata, count=", scount);
+        Log.d("In caldata, We count to ", scount + " events");
 
         // Iterate through results
         cur.moveToFirst();
-        Log.d("In caldate", "cur.moveToFirst()");
+        Log.d("In caldatanow", "cur.moveToFirst()");
 
-        while (cur.moveToNext()) {
-            Log.d("In caldata", "loop da loop");
-            String desc = null;
-            long starttime = 0;
-            long endtime = 0;
+        Integer c=0;
 
-            // Get the field values
-            desc = cur.getString(PROJECTION_DESC_INDEX);
-            starttime = cur.getLong(PROJECTION_DTSTART_INDEX);
-            endtime = cur.getLong(PROJECTION_DTEND_INDEX);
-
-            // Convert date/time
-            String timedatestart = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date (starttime));
-            String timedateend = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date (endtime));
-
-            // Get just the date
-            String datestart = new java.text.SimpleDateFormat("yyyy/MM/dd").format(new java.util.Date (starttime));
-            Log.d("datestart: ",datestart);
-
-            // Get just the times
-            String timestart = new java.text.SimpleDateFormat("HH:mm").format(new java.util.Date (starttime));
-            Log.d("Timestart: ",timestart);
-            String timeend = new java.text.SimpleDateFormat("HH:mm").format(new java.util.Date (endtime));
-            Log.d("Timeend: ",timeend);
+        // Dont proceed if there are no results, just clear the events
+        if (count==0) {
+            // Find textviews
+            int[] textViewIDsact = new int[] {R.id.act0, R.id.act1, R.id.act2, R.id.act3, R.id.act4, R.id.act5, R.id.act6  };
+            for(int i=0; i < textViewIDsact.length; i++) {
+                TextView tv = (TextView ) findViewById(textViewIDsact[i]);
+                tv.setText("");
+            }
+            String dummy="1";
+            return(dummy);
         }
+            do {
+                Log.d("In caldata", "loop da loop");
+                String desc = null;
+                long starttime = 0;
+                long endtime = 0;
+
+                // Get the field values
+                desc = cur.getString(PROJECTION_DESC_INDEX);
+                starttime = cur.getLong(PROJECTION_DTSTART_INDEX);
+                endtime = cur.getLong(PROJECTION_DTEND_INDEX);
+    /*
+                eventsdesc[c]=desc;
+                eventsstart[c]=starttime;
+                eventsend[c]=endtime;
+    */
+                String sc = String.valueOf(c);
+                String sstart = String.valueOf(starttime);
+                String send = String.valueOf(endtime);
+
+                eventsall[c][0] = sc;
+                eventsall[c][1] = desc;
+                eventsall[c][2] = sstart;
+                eventsall[c][3] = send;
+                //Add to counter
+                c++;
+                //}
+            } while (cur.moveToNext());
 
         cur.close();
+        // Log. c starts at 0 so we add 1.
+        Log.d("Cursor closed", c+1 + " events accounted for");
+
+        //Log.d("Result 0", eventsdesc[0] + "-" + eventsstart[0] + "-" + eventsend[0]);
+
+
+        // Array of event textviews
+        int[] textViewIDsact = new int[] {R.id.act0, R.id.act1, R.id.act2, R.id.act3, R.id.act4, R.id.act5, R.id.act6  };
+        int[] textViewIDs = new int[] {R.id.date0, R.id.date1, R.id.date2, R.id.date3, R.id.date4, R.id.date5, R.id.date6  };
+
+        for (int x=0; x<c; x++ ) {
+            //Startdate
+            Long sdate = Long.parseLong(eventsall[x][2]);
+            String ssdate = String.valueOf(sdate);
+            Long edate = Long.parseLong(eventsall[x][3]);
+            String sedate = String.valueOf(edate);
+
+            //Log.d("Results", x + "-" + eventsall[x][1]);
+            //Log.d("ssdate", x + "-" + ssdate);
+
+            // Convert to real date
+            String datestart = new java.text.SimpleDateFormat("yyyy/MM/dd").format(new java.util.Date (sdate));
+            String timestart = new java.text.SimpleDateFormat("HH:mm").format(new java.util.Date (sdate));
+            String timeend = new java.text.SimpleDateFormat("HH:mm").format(new java.util.Date (edate));
+
+
+            // Loop throught textviews
+            for (int tc=0; tc<7; tc++) {
+                Integer test = textViewIDs[tc];
+
+                String sstc = String.valueOf(test);
+                //Log.d("stc", sstc);
+
+                TextView tv = (TextView ) findViewById(textViewIDs[tc]);
+                String caldate = tv.getText().toString();
+                //String sweeknow = curinfo.getText().toString();
+
+                if (datestart.equals(caldate)) {
+                    Log.d("Searching...", "Match!!!");
+                    Log.d("cal date from gui", caldate);
+                    Log.d("datestart: ",datestart);
+                    String sdesc = eventsall[x][1];
+                    Log.d("Desc", sdesc);
+                    TextView tvact = (TextView ) findViewById(textViewIDsact[tc]);
+                    tvact.setText(sdesc+"\n"+timestart+timeend);
+
+                }
+
+            }
+
+        }
+
+
+
+
+
+        /*
+        // Convert date/time
+        String timedatestart = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date (starttime));
+        String timedateend = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date (endtime));
+
+        // Get just the date
+        String datestart = new java.text.SimpleDateFormat("yyyy/MM/dd").format(new java.util.Date (starttime));
+        Log.d("datestart: ",datestart);
+
+        // Get just the times
+        String timestart = new java.text.SimpleDateFormat("HH:mm").format(new java.util.Date (starttime));
+        Log.d("Timestart: ",timestart);
+        String timeend = new java.text.SimpleDateFormat("HH:mm").format(new java.util.Date (endtime));
+        Log.d("Timeend: ",timeend);
+        */
+
         String dummy="1";
         return(dummy);
     }
-    public String caldata(String calstartdate, String calenddate)
+    public String caldata(String calstartdate, String calenddate, Integer calid)
     {
         Log.d("In caldata: ", calstartdate +"-"+ calenddate);
 
@@ -580,6 +725,65 @@ public class Main extends Activity {
         return(dummy);
     }
 
+
+    public String[][] listCals() {
+        // List calendars
+        String[] projection = {CalendarContract.Calendars._ID,
+                CalendarContract.Calendars.NAME,
+                CalendarContract.Calendars.OWNER_ACCOUNT,
+                CalendarContract.Calendars.ACCOUNT_TYPE,
+                CalendarContract.Calendars.CALENDAR_DISPLAY_NAME,
+                CalendarContract.Calendars.CALENDAR_TIME_ZONE,
+                CalendarContract.Calendars.CALENDAR_COLOR,
+                CalendarContract.Calendars.IS_PRIMARY,
+                CalendarContract.Calendars.VISIBLE};
+        String selection = String.format("%s = 1", CalendarContract.Calendars.VISIBLE);
+
+        Cursor c = getContentResolver().query(CalendarContract.Calendars.CONTENT_URI,
+                projection,
+                selection,
+                null, null);
+
+        // Check number of calendars
+        Integer ccount = c.getCount();
+        Log.d("c count", String.valueOf(ccount));
+
+        String sid="";
+        // Array size depends on number of calendars
+        String calid[][]=new String[ccount][ccount];
+        Integer count=0;
+
+        c.moveToFirst();
+        do {
+            // the cursor, c, contains all the projection data items
+            // access the cursor’s contents by array index as declared in
+            // your projection
+            long id = c.getLong(0);
+            sid = String.valueOf(id);
+            String name = c.getString(1);
+            String owner = c.getString(2);
+            String type = c.getString(3);
+            String dname = c.getString(4);
+
+            calid[count][0]=sid;
+            calid[count][1]=name;
+            count++;
+
+            /*
+            Log.d("cal id", sid);
+            Log.d("cal name", name);
+            Log.d("cal owner", owner);
+            Log.d("cal type", type);
+            Log.d("cal dname", dname);
+            */
+        } while (c.moveToNext());
+        c.close();
+        Log.d("count: ", String.valueOf(count));
+
+        return (calid);
+
+    }
+
     public String findnextweek (Integer weeknow) {
         Log.d("Class: ", "findnextweek");
         String sweeknow=String.valueOf(weeknow);
@@ -591,15 +795,18 @@ public class Main extends Activity {
 
         //Find next sunday
         // Calendar is at next monday, move one day back
-        calendar.add(Calendar.DATE,-1);
+        //calendar.add(Calendar.DATE,-1);
 
         Integer nextyear = calendar.get(Calendar.YEAR);
         String nextsmonth = String.format("%02d",calendar.get(Calendar.MONTH)+1);
         //Integer nextmonth = calendar.get(Calendar.MONTH);
-        Integer nextday = calendar.get(Calendar.DATE);
+        String nextsday = String.format("%02d",calendar.get(Calendar.DATE));
+
+        weeknow = calendar.get(Calendar.WEEK_OF_YEAR);
+        Log.d("Week now +1 : ", sweeknow);
+
         // Convert to strings
         String nextsyear = String.valueOf(nextyear);
-        String nextsday = String.valueOf(nextday);
         String nextdate = nextsyear + "/" + nextsmonth  + "/" + nextsday;
         Log.d("Next sunday is: ", nextdate);
         return (nextdate);

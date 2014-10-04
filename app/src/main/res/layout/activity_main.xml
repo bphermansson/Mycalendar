@@ -49,18 +49,26 @@
         android:text="Måndag"
         />
     <TextView
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/monday"
         android:background="#85ADFF"
         android:id="@+id/mondayinfo"
+        />
+    <Spinner
+        android:id="@+id/calSelect"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/mondayinfo"
+        android:layout_below="@+id/mondayinfo"
+
         />
 
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/tableLayout1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/mondayinfo">
+        android:layout_below="@+id/calSelect">
         <!-- 2 columns -->
         <TableRow
             android:id="@+id/tableRow0"
