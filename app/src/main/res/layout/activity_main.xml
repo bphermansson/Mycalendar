@@ -1,3 +1,9 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    >
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,37 +15,9 @@
 
     tools:context=".Main">
 
-    <TextView
-        android:text="@string/welcome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txtWeek"/>
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtWeek"
-        android:background="#85ADFF"
-        android:id="@+id/curinfo"
-        />
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnPrev"
-        android:layout_toRightOf="@id/txtWeek"
-        android:src="@drawable/ic_action_previous_item"
-        android:onClick="prevweek"
-        />
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnNext"
-        android:src="@drawable/ic_action_next_item"
-        android:onClick="nextweek"
-        android:layout_toRightOf="@id/btnPrev"
-        />
-
+<!--
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -48,55 +26,120 @@
         android:id="@+id/monday"
         android:text="Måndag"
         />
+-->
+
     <TextView
+        android:id="@+id/selinfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/monday"
-        android:background="#85ADFF"
-        android:id="@+id/mondayinfo"
+        android:text="@string/selcal"
+        android:textSize="21dp"
+        android:gravity="center"
         />
     <Spinner
         android:id="@+id/calSelect"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/mondayinfo"
-        android:layout_below="@+id/mondayinfo"
+        android:layout_toRightOf="@id/selinfo"
+        />
+    <TextView
+        android:id="@+id/week"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/calSelect"
+        android:text="@string/week"
+        android:textSize="21dp"
+        android:gravity="center"
+
 
         />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/curinfo"
+        android:layout_toRightOf="@id/week"
+        android:layout_below="@id/calSelect"
+        android:textSize="21dp"
+        android:gravity="center"
+        android:paddingRight="40dp"
+        />
+    <ImageButton
+        android:id="@+id/btnPrev"
+        android:src="@drawable/ic_action_previous_item"
+        android:onClick="prevweek"
+        android:layout_below="@id/calSelect"
+        android:layout_toEndOf="@id/curinfo"
+        android:layout_height="45dp"
+        android:layout_width="45dp"
+        />
+    <ImageButton
+        android:id="@+id/btnNext"
+        android:src="@drawable/ic_action_next_item"
+        android:onClick="nextweek"
+        android:layout_below="@id/calSelect"
+        android:layout_toEndOf="@id/btnPrev"
+        android:layout_height="45dp"
+        android:layout_width="45dp"
+        />
+    <ImageButton
+        android:id="@+id/btnToday"
+        android:src="@drawable/ic_action_locate"
+        android:onClick="today"
+        android:layout_below="@id/calSelect"
+        android:layout_toEndOf="@id/btnNext"
+        android:layout_height="45dp"
+        android:layout_width="45dp"
+        />
+    <ImageView
+        android:id="@+id/horline"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="10dp"
+        android:paddingBottom="5dp"
+        android:layout_margin="10dp"
+        android:layout_below="@id/btnPrev"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:src="@android:drawable/divider_horizontal_bright" />
 
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/tableLayout1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/calSelect">
+        android:layout_below="@+id/horline"
+        android:stretchColumns="*"
+        >
         <!-- 2 columns -->
         <TableRow
             android:id="@+id/tableRow0"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:padding="5dip" >
-
-            <TextView
-                android:id="@+id/textView0"
-                android:layout_width="fill_parent"
-                android:text="Row 0"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:background="#85ADFF"
-                android:textSize="16dp"
-                />
             <TextView
                 android:id="@+id/date0"
                 android:layout_width="fill_parent"
                 android:text="Date 0"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:background="#85ADFF"
+                android:background="#CC99FF"
+                android:padding="5dp"
+                android:paddingRight="10dp"
                 />
+            <TextView
+                android:id="@+id/textView0"
+                android:layout_width="wrap_content"
+                android:text="Row 0"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:background="#CC99FF"
+                android:padding="5dp"
+                android:textSize="21dp"
+                />
+        </TableRow>
+        <TableRow>
             <TextView
                 android:id="@+id/act0"
                 android:layout_width="fill_parent"
+                android:layout_span="3"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:background="#85ADFF"
-                android:lines="2"
+                android:background="#E0E0FF"
                 />
         </TableRow>
         <TableRow
@@ -106,27 +149,30 @@
             android:padding="5dip" >
 
             <TextView
-                android:id="@+id/textView1"
-                android:layout_width="fill_parent"
-                android:text="Column 1"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:background="#85ADFF"
-                />
-            <TextView
                 android:id="@+id/date1"
                 android:layout_width="fill_parent"
                 android:text="Date 1"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:background="#85ADFF"
-                />
+                android:background="#CC99FF"
+                android:padding="5dp"                />
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="fill_parent"
+                android:text="Column 1"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:background="#CC99FF"
+                android:padding="5dp"                />
+
+        </TableRow>
+
+        <TableRow>
             <TextView
                 android:id="@+id/act1"
                 android:layout_width="fill_parent"
+                android:layout_span="3"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:background="#85ADFF"
-                android:lines="2"
+                android:background="#F0F0FF"
                 />
-
         </TableRow>
         <TableRow
             android:id="@+id/tableRow2"
@@ -135,27 +181,30 @@
             android:padding="5dip" >
 
             <TextView
-                android:id="@+id/textView2"
-                android:layout_width="fill_parent"
-                android:text="Column 1"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:background="#85ADFF"
-                />
-            <TextView
                 android:id="@+id/date2"
                 android:layout_width="fill_parent"
                 android:text="Date 2"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:background="#85ADFF"
-                />
+                android:background="#CC99FF"
+                android:padding="5dp"                />
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="fill_parent"
+                android:text="Column 1"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:background="#CC99FF"
+                android:padding="5dp"                />
+
+        </TableRow>
+
+        <TableRow>
             <TextView
                 android:id="@+id/act2"
                 android:layout_width="fill_parent"
+                android:layout_span="3"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:background="#85ADFF"
-                android:lines="2"
+                android:background="#E0E0FF"
                 />
-
         </TableRow>
         <TableRow
             android:id="@+id/tableRow3"
@@ -164,27 +213,29 @@
             android:padding="5dip" >
 
             <TextView
-                android:id="@+id/textView3"
-                android:layout_width="fill_parent"
-                android:text="Column 1"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:background="#85ADFF"
-                />
-            <TextView
                 android:id="@+id/date3"
                 android:layout_width="fill_parent"
                 android:text="Date 3"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:background="#85ADFF"
-                />
+                android:background="#CC99FF"
+                android:padding="5dp"                />
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="fill_parent"
+                android:text="Column 1"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:background="#CC99FF"
+                android:padding="5dp"                />
+        </TableRow>
+
+        <TableRow>
             <TextView
                 android:id="@+id/act3"
                 android:layout_width="fill_parent"
+                android:layout_span="3"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:background="#85ADFF"
-                android:lines="2"
+                android:background="#F0F0FF"
                 />
-
         </TableRow>
         <TableRow
             android:id="@+id/tableRow4"
@@ -193,27 +244,29 @@
             android:padding="5dip" >
 
             <TextView
-                android:id="@+id/textView4"
-                android:layout_width="fill_parent"
-                android:text="Column 1"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:background="#85ADFF"
-                />
-            <TextView
                 android:id="@+id/date4"
                 android:layout_width="fill_parent"
                 android:text="Date 4"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:background="#85ADFF"
-                />
+                android:background="#CC99FF"
+                android:padding="5dp"                />
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="fill_parent"
+                android:text="Column 1"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:background="#CC99FF"
+                android:padding="5dp"                />
+        </TableRow>
+
+        <TableRow>
             <TextView
                 android:id="@+id/act4"
                 android:layout_width="fill_parent"
+                android:layout_span="3"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:background="#85ADFF"
-                android:lines="2"
+                android:background="#E0E0FF"
                 />
-
         </TableRow>
         <TableRow
             android:id="@+id/tableRow5"
@@ -222,59 +275,65 @@
             android:padding="5dip" >
 
             <TextView
-                android:id="@+id/textView5"
-                android:layout_width="fill_parent"
-                android:text="Column 1"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:background="#85ADFF"
-                />
-            <TextView
                 android:id="@+id/date5"
                 android:layout_width="fill_parent"
                 android:text="Date 5"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:background="#85ADFF"
-                />
+                android:background="#CC99FF"
+                android:padding="5dp"                />
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="fill_parent"
+                android:text="Column 1"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:background="#CC99FF"
+                android:padding="5dp"                />
+
+        </TableRow>
+
+        <TableRow>
             <TextView
                 android:id="@+id/act5"
                 android:layout_width="fill_parent"
+                android:layout_span="3"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:background="#85ADFF"
-                android:lines="2"
+                android:background="#F0F0FF"
                 />
-
         </TableRow>
         <TableRow
             android:id="@+id/tableRow6"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:padding="5dip" >
-
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="fill_parent"
-                android:text="Column 1"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:background="#85ADFF"
-                />
             <TextView
                 android:id="@+id/date6"
                 android:layout_width="fill_parent"
                 android:text="Date 6"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:background="#85ADFF"
-                />
+                android:background="#CC99FF"
+                android:padding="5dp"                />
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="fill_parent"
+                android:text="Column 1"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:background="#CC99FF"
+                android:padding="5dp"                />
+
+        </TableRow>
+
+        <TableRow>
             <TextView
                 android:id="@+id/act6"
                 android:layout_width="fill_parent"
+                android:layout_span="3"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:background="#85ADFF"
-                android:lines="2"
+                android:background="#E0E0FF"
                 />
-
         </TableRow>
 
     </TableLayout>
 
 </RelativeLayout>
 
+</ScrollView>

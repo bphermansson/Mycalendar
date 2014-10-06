@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Mandagher</string>
+    <string name="selcal">Välj kalender:</string>
+    <string name="week">Vecka: </string>
+    <string name="time">Tid: </string>
+    <string name="kl">Kl: </string>
+
+</resources>

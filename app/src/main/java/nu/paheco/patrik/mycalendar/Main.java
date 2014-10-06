@@ -2,9 +2,11 @@ package nu.paheco.patrik.mycalendar;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
 import android.provider.Settings;
 import android.text.format.Time;
@@ -47,17 +49,27 @@ public class Main extends Activity {
     Long[] eventsstart = new Long[20];
     Long[] eventsend = new Long[20];
     String[] eventsdesc = new String[20];
-    String eventsall[][] = new String[10][10];
+    String eventsall[][] = new String[100][100];
     String calstartdate;
     String calenddate;
     String calid;
     Integer intcalid;
+    Integer intcalpos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d("TAG", "In onCreate()");
+
+        // Which calendar was selected last time? Get value.
+        String lastCalid = getPreferences(MODE_PRIVATE).getString("calpos", "");
+        Integer intLastCalid = Integer.valueOf(lastCalid);
+        if (lastCalid=="") {
+            lastCalid="1";
+        }
+        Log.d("Last calid= ", lastCalid);
+        intcalpos = Integer.valueOf(lastCalid);
 
         Calendar calendar = Calendar.getInstance();
 
@@ -75,8 +87,6 @@ public class Main extends Activity {
         calid = listCals();
         //Integer len = calid[0].length;
         //Log.d("Length;", String.valueOf(len));
-
-
 
         // Set week number in Gui
         Integer weeknow = calendar.get(Calendar.WEEK_OF_YEAR);
@@ -120,6 +130,10 @@ public class Main extends Activity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
         dropdown.setAdapter(adapter);
 
+        // Set default position
+        //intLastCalid=1;
+        dropdown.setSelection(intLastCalid);
+
         // Selection event
         dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -132,6 +146,11 @@ public class Main extends Activity {
                 selcal = (selcalitem[0]);
                 intcalid = Integer.parseInt(selcal);
                 //Log.d("You've clicked: ", selcalid);
+                Log.d("Position", String.valueOf(position));
+                // Store selection permanently
+                getPreferences(MODE_PRIVATE).edit().putString("calpos",String.valueOf(position)).commit();
+                Log.d("Stored: ", String.valueOf(position));
+
                 Log.d("Call: ", "caldatanow");
                 caldatanow(calstartdate,calenddate);
 
@@ -142,8 +161,6 @@ public class Main extends Activity {
         });
 
     }
-
-
 
     // Button prev clicked
     public void prevweek(View v) {
@@ -227,7 +244,7 @@ public class Main extends Activity {
 
     public String listDays(String date) {
         Log.d("Class: ", "listDays");
-        Log.d("Start date: ", date);
+        //Log.d("Start date: ", date);
 
         // Split string in year, month, day
         String[] separated = date.split("/");
@@ -286,7 +303,7 @@ public class Main extends Activity {
         calendar.add(calendar.DATE,-7);
         Integer day = calendar.get(Calendar.DATE);
         String sday = String.valueOf(day);
-        Log.d("Rewind to ",sday);
+        //Log.d("Rewind to ",sday);
 
         // Add weekdays to Gui
         txtDay0.setText(arrDay[0]);
@@ -310,7 +327,7 @@ public class Main extends Activity {
     }
 
     public String findLastMon() {
-        Log.d("Class: ", "findLastMon");
+        Log.d(": ", "findLastMon");
         Calendar calendar = Calendar.getInstance();
 
         // Loop until we find the last monday
@@ -334,7 +351,6 @@ public class Main extends Activity {
         String sday = String.valueOf(day);
         String date = syear + "/" + smonth  + "/" + sday;
         return(date);
-
     }
     //public String caldata(Integer day, Integer month, Integer year,
     //                      Integer nextday, Integer nextmonth, Integer nextyear)
@@ -457,6 +473,13 @@ public class Main extends Activity {
         int[] textViewIDsact = new int[] {R.id.act0, R.id.act1, R.id.act2, R.id.act3, R.id.act4, R.id.act5, R.id.act6  };
         int[] textViewIDs = new int[] {R.id.date0, R.id.date1, R.id.date2, R.id.date3, R.id.date4, R.id.date5, R.id.date6  };
 
+        // Clear event textviews
+
+        for (int tc=0; tc<7; tc++) {
+            TextView tvact = (TextView ) findViewById(textViewIDsact[tc]);
+            tvact.setText("");
+        }
+
         for (int x=0; x<c; x++ ) {
             //Startdate
             Long sdate = Long.parseLong(eventsall[x][2]);
@@ -473,11 +496,12 @@ public class Main extends Activity {
             String timeend = new java.text.SimpleDateFormat("HH:mm").format(new java.util.Date (edate));
 
 
+
             // Loop throught textviews
             for (int tc=0; tc<7; tc++) {
-                Integer test = textViewIDs[tc];
+                //Integer test = textViewIDs[tc];
 
-                String sstc = String.valueOf(test);
+                //String sstc = String.valueOf(test);
                 //Log.d("stc", sstc);
 
                 TextView tv = (TextView ) findViewById(textViewIDs[tc]);
@@ -490,8 +514,10 @@ public class Main extends Activity {
                     Log.d("datestart: ",datestart);
                     String sdesc = eventsall[x][1];
                     Log.d("Desc", sdesc);
+
                     TextView tvact = (TextView ) findViewById(textViewIDsact[tc]);
-                    tvact.setText(sdesc+"\n"+timestart+timeend);
+                    //tvact.append(sdesc+"   "+getResources().getString(R.string.kl)+" "+timestart+"-"+timeend+"\n");
+                    tvact.append(timestart+"-"+timeend +": " + sdesc+"\n");
 
                 }
 
