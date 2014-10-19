@@ -90,6 +90,15 @@
         android:layout_height="45dp"
         android:layout_width="45dp"
         />
+    <Button
+        android:id="@+id/btnPrint"
+        android:onClick="printpreview"
+        android:layout_below="@id/calSelect"
+        android:layout_toEndOf="@id/btnToday"
+        android:layout_height="45dp"
+        android:layout_width="85dp"
+        android:text="Print"
+        />
     <ImageView
         android:id="@+id/horline"
         android:layout_gravity="center_horizontal"
