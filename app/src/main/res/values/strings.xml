@@ -9,6 +9,8 @@
     <string name="week">Week</string>
     <string name="time">Time: </string>
     <string name="kl">At: </string>
+    <string name="print">Print</string>
 
+    <color name="bg">#CCCCFF</color>
 
 </resources>

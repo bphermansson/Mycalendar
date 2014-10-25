@@ -49,7 +49,7 @@ public class Main extends Activity {
     // For storing events data
     Long[] eventsstart = new Long[20];
     Long[] eventsend = new Long[20];
-    String[] eventsdesc = new String[20];
+    //String[] eventsdesc = new String[20];
     String eventsall[][] = new String[100][100];
     String calstartdate;
     String calenddate;
@@ -118,12 +118,13 @@ public class Main extends Activity {
         // Create array for data
         final ArrayList<String> items = new ArrayList<String>();
         String temp;
-        String selcalid="";
+       // String selcalid="";
         // Add items to array
         for (int i = 0; i < calid.length; i++) {
             Log.d("calendar1: ", calid[i][0]);
-            temp = calid[i][0] + "-" + calid[i][1];
-            items.add(temp);
+            //temp = calid[i][0] + "-" + calid[i][1];
+            //items.add(temp);
+            items.add(calid[i][1]);
         }
         // Add to spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
@@ -138,16 +139,18 @@ public class Main extends Activity {
             public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
 
                 String selcal = items.get(position);
-                String[] selcalitem;
-                selcalitem = selcal.split("-");
+                //String[] selcalitem;
+                //selcalitem = selcal.split("-");
                 // Get just the id
-                selcal = (selcalitem[0]);
-                intcalid = Integer.parseInt(selcal);
+                //selcal = (selcalitem[0]);
+                //intcalid = Integer.parseInt(selcal);
                 //Log.d("You've clicked: ", selcalid);
                 Log.d("Position", String.valueOf(position));
                 // Store selection permanently
                 getPreferences(MODE_PRIVATE).edit().putString("calpos",String.valueOf(position)).commit();
                 Log.d("Stored: ", String.valueOf(position));
+                // Store position/id
+                Constants.id = position;
 
                 // Find events and add them to Gui
                 Log.d("Call: ", "caldatanow");
@@ -188,6 +191,29 @@ public class Main extends Activity {
         v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
         String dir="forward";
         changeweek(dir);
+    }
+
+    // Today 'clicked'
+    public void today(View v) {
+        String todaysdate = todaysdate();
+        Log.d("Today is: ", todaysdate);
+        // Find date for last monday
+        String date = findLastMon();
+        Log.d("Last monday was: ", date);
+
+        // Set week number in Gui
+        Calendar calendar = Calendar.getInstance();
+        Integer weeknow = calendar.get(Calendar.WEEK_OF_YEAR);
+        TextView curinfo=(TextView)findViewById(R.id.curinfo);
+        String info = String.valueOf(weeknow);
+        curinfo.setText(info);
+
+        // Show weekdays and dates in Gui. Provide date for last monday, = start date for list
+        listDays(date);
+
+        // List events
+        caldatanow(date,calenddate);
+
     }
 
     public void changeweek(String dir) {
@@ -371,8 +397,9 @@ public class Main extends Activity {
     //                      Integer nextday, Integer nextmonth, Integer nextyear)
     public String caldatanow(String calstartdate, String calenddate)
     {
+        Integer id = Constants.id;
         // Here we go through the calendar and find events.
-        Log.d("In caldatanow: ", calstartdate +"-"+ calenddate + ". Calid= "+ intcalid);
+        Log.d("In caldatanow: ", calstartdate +"-"+ calenddate + ". Calid= "+ id);
 
         //Oskars calendar has id 12
         //String calendarID="12";
@@ -409,7 +436,7 @@ public class Main extends Activity {
         Log.d("caldata - Selection end: ", dtEnd);
 
         // Convert calenderid intcalid to string
-        String scalid = String.valueOf(intcalid);
+        String scalid = String.valueOf(Constants.id+1);
 
         Cursor cur = null;
         ContentResolver cr = getContentResolver();
@@ -869,7 +896,7 @@ public class Main extends Activity {
             smonth="0" + smonth;
         }
         else {
-            smonth="1" + smonth;
+            //smonth="1" + smonth;
         }
 
         return syear + "/" + smonth + "/" + sday;
