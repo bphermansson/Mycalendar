@@ -19,10 +19,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 
 public class Main extends Activity {
@@ -534,8 +536,6 @@ public class Main extends Activity {
             String timestart = new java.text.SimpleDateFormat("HH:mm").format(new java.util.Date (sdate));
             String timeend = new java.text.SimpleDateFormat("HH:mm").format(new java.util.Date (edate));
 
-
-
             // Loop throught textviews
             for (int tc=0; tc<7; tc++) {
                 //Integer test = textViewIDs[tc];
@@ -548,15 +548,34 @@ public class Main extends Activity {
                 //String sweeknow = curinfo.getText().toString();
 
                 if (datestart.equals(caldate)) {
-                    Log.d("Searching...", "Match!!!");
-                    Log.d("cal date from gui", caldate);
-                    Log.d("datestart: ",datestart);
+                    //Log.d("Searching...", "Match!!!");
+                    //Log.d("cal date from gui", caldate);
+                    //Log.d("datestart: ",datestart);
                     String sdesc = eventsall[x][1];
-                    Log.d("Desc", sdesc);
+                    //Log.d("Desc", sdesc);
+
+                    // Starttime and endtime in millis
+                    String sstart[] = timestart.split(":");
+                    int hstart = Integer.parseInt (sstart[0]);
+                    int mstart = Integer.parseInt (sstart[1]);
+
+                    String send[] = timeend.split(":");
+                    int hend = Integer.parseInt (send[0]);
+                    int mend = Integer.parseInt (send[1]);
+
+                    Long dur = (TimeUnit.HOURS.toMillis(hend) + TimeUnit.MINUTES.toMillis(mend))-(TimeUnit.HOURS.toMillis(hstart) + TimeUnit.MINUTES.toMillis(mstart));
+                    //Log.d("dur: ", String.valueOf(dur));
+
+                    String sdur = String.format("%d h, %d m",
+                            TimeUnit.MILLISECONDS.toHours(dur),
+                            TimeUnit.MILLISECONDS.toMinutes(dur)-TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(dur))
+                    );
+                    Log.d("sdur: ", sdur);
+
 
                     TextView tvact = (TextView ) findViewById(textViewIDsact[tc]);
                     //tvact.append(sdesc+"   "+getResources().getString(R.string.kl)+" "+timestart+"-"+timeend+"\n");
-                    tvact.append(timestart+"-"+timeend +": " + sdesc+"\n");
+                    tvact.append(timestart+"-"+timeend + " (" + sdur  + "): " + sdesc+"\n");
 
                 }
 

@@ -6,5 +6,7 @@
     <string name="time">Tid: </string>
     <string name="kl">Kl: </string>
     <string name="print">Skriv ut</string>
+    <string name="settings">Inställningar</string>
+
 
 </resources>
