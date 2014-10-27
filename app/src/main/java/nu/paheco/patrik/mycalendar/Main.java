@@ -180,7 +180,16 @@ public class Main extends Activity {
         startActivityForResult(myIntent, 0);
 
     }
-    // Button prev clicked
+    // Button settings
+    public void settings(View v) {
+        // "Brm"
+        v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+        Intent settings = new Intent(v.getContext(), settings.class);
+        Log.d("Call ","settings");
+        startActivityForResult(settings, 0);
+    }
+
+        // Button prev clicked
     public void prevweek(View v) {
         // "Brm"
         v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);

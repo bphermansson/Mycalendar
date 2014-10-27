@@ -11,6 +11,23 @@
     <string name="kl">At: </string>
     <string name="print">Print</string>
     <string name="settings">Settings</string>
+    <string name="kidsname">Kid\'s name</string>
+    <string name="kidspersnr">kidspersnr</string>
+    <string name="department">Department</string>
+    <string name="address" />
+    <string name="phone">phone</string>
+    <string name="parent1">parent1</string>
+    <string name="parent2">parent2</string>
+    <string name="p1persnr">p1persnr</string>
+    <string name="p2persnr">p2persnr</string>
+    <string name="p1work">p1work</string>
+    <string name="p2work">p2work</string>
+    <string name="p1workphone">p1workphone</string>
+    <string name="p2workphone">p2workphone</string>
+    <string name="p1mobile">p1mobile</string>
+    <string name="p2mobile">p2mobile</string>
+    <string name="p1mail">p1mail</string>
+    <string name="p2mail">p2mail</string>
 
 
     <color name="bg">#CCCCFF</color>

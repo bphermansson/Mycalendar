@@ -2,11 +2,28 @@
 <resources>
     <string name="app_name">Mandagher</string>
     <string name="selcal">Välj kalender:</string>
-    <string name="week">Vecka: </string>
+    <string name="week">v </string>
     <string name="time">Tid: </string>
     <string name="kl">Kl: </string>
     <string name="print">Skriv ut</string>
     <string name="settings">Inställningar</string>
+    <string name="kidsname">Barnets namn</string>
+    <string name="kidspersnr">Barnets personnummer</string>
+    <string name="department">Avdelning</string>
+    <string name="phone">Telefon</string>
+    <string name="address">Adress</string>
+    <string name="parent1">Namn vårdnadshavare 1</string>
+    <string name="parent2">Namn vårdnadshavare 2</string>
+    <string name="p1work">Arbetsplats vårdnadshavare 1</string>
+    <string name="p2work">Arbetsplats vårdnadshavare 2</string>
+    <string name="p1persnr">Vårdnadshavare 1:s personnummer</string>
+    <string name="p2persnr">Vårdnadshavare 2:s personnummer</string>
+    <string name="p1workphone">Vårdnadshavare 1 arbetstelefon</string>
+    <string name="p2workphone">Vårdnadshavare 2 arbetstelefon</string>
+    <string name="p1mobile">Vårdnadshavare 1 mobil</string>
+    <string name="p2mobile">Vårdnadshavare 2 mobil</string>
+    <string name="p1mail">Vårdnadshavare 1 e-post</string>
+    <string name="p2mail">Vårdnadshavare 2 e-post</string>
 
 
 </resources>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:layout_below="@id/btnPrint"
+    >
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/kidsname"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/kidsname"
+        android:inputType="text" />
+    <EditText
+        android:id="@+id/kidspersnr"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/kidspersnr"
+        android:inputType="text" />
+    <EditText
+        android:id="@+id/department"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/department"
+        android:inputType="text" />
+    <EditText
+        android:id="@+id/address"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/address"
+        android:inputType="text" />
+    <EditText
+        android:id="@+id/phone"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/phone"
+        android:inputType="text" />
+    <EditText
+        android:id="@+id/parent1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/parent1"
+        android:inputType="text" />
+    <EditText
+        android:id="@+id/parent2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/parent2"
+        android:inputType="text" />
+    <EditText
+        android:id="@+id/p1persnr"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/p1persnr"
+        android:inputType="text" />
+    <EditText
+        android:id="@+id/p2persnr"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/p2persnr"
+        android:inputType="text" />
+    <EditText
+        android:id="@+id/p1work"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/p1work"
+        android:inputType="text" />
+    <EditText
+        android:id="@+id/p2work"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/p2work"
+        android:inputType="text" />
+    <EditText
+        android:id="@+id/p1workphone"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/p1workphone"
+        android:inputType="text" />
+    <EditText
+        android:id="@+id/p2workphone"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/p2workphone"
+        android:inputType="text" />
+    <EditText
+        android:id="@+id/p1mobile"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/p1mobile"
+        android:inputType="text" />
+    <EditText
+        android:id="@+id/p2mobile"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/p2mobile"
+        android:inputType="text" />
+    <EditText
+        android:id="@+id/p1mail"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/p1mail"
+        android:inputType="text" />
+    <EditText
+        android:id="@+id/p2mail"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/p2mail"
+        android:inputType="text" />
+
+    </LinearLayout>
+</ScrollView>
