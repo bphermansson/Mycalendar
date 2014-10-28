@@ -91,7 +91,7 @@
         />
     <ImageButton
         android:id="@+id/btnPrint"
-        android:src="@drawable/ic_print"
+        android:src="@drawable/print3"
         android:onClick="printpreview"
         android:layout_below="@id/calSelect"
         android:layout_toEndOf="@id/btnToday"

@@ -575,7 +575,7 @@ public class Main extends Activity {
                     Long dur = (TimeUnit.HOURS.toMillis(hend) + TimeUnit.MINUTES.toMillis(mend))-(TimeUnit.HOURS.toMillis(hstart) + TimeUnit.MINUTES.toMillis(mstart));
                     //Log.d("dur: ", String.valueOf(dur));
 
-                    String sdur = String.format("%d h, %d m",
+                    String sdur = String.format("%d,%d",
                             TimeUnit.MILLISECONDS.toHours(dur),
                             TimeUnit.MILLISECONDS.toMinutes(dur)-TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(dur))
                     );

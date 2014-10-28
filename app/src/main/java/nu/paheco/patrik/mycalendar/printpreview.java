@@ -35,6 +35,28 @@ public class printpreview extends Activity {
         super.onCreate(savedInstanceState);
         Log.d("Printpreview", "In onCreate()");
 
+        // Get stored shared settings from "settings"
+        String kidsname = getSharedPreferences("settings", MODE_PRIVATE).getString("kidsname", "");
+        String kidspersnr = getSharedPreferences("settings", MODE_PRIVATE).getString("kidspersnr","");
+        String department = getSharedPreferences("settings", MODE_PRIVATE).getString("department","");
+        String address = getSharedPreferences("settings", MODE_PRIVATE).getString("address","");
+        String phone = getSharedPreferences("settings", MODE_PRIVATE).getString("phone","");
+        String parent1 = getSharedPreferences("settings", MODE_PRIVATE).getString("parent1","");
+        String parent2 = getSharedPreferences("settings", MODE_PRIVATE).getString("parent2","");
+        String p1persnr = getSharedPreferences("settings", MODE_PRIVATE).getString("p1persnr","");
+        String p2persnr = getSharedPreferences("settings", MODE_PRIVATE).getString("p2persnr","");
+        String p1work = getSharedPreferences("settings", MODE_PRIVATE).getString("p1work","");
+        String p2work = getSharedPreferences("settings", MODE_PRIVATE).getString("p2work","");
+        String p1workphone = getSharedPreferences("settings", MODE_PRIVATE).getString("p1workphone","");
+        String p2workphone = getSharedPreferences("settings", MODE_PRIVATE).getString("p2workphone","");
+        String p1mobile = getSharedPreferences("settings", MODE_PRIVATE).getString("p1mobile","");
+        String p2mobile = getSharedPreferences("settings", MODE_PRIVATE).getString("p2mobile","");
+        String p1mail = getSharedPreferences("settings", MODE_PRIVATE).getString("p1mail","");
+        String p2mail = getSharedPreferences("settings", MODE_PRIVATE).getString("p2mail","");
+
+
+        Log.d ("Stored name: ", kidsname);
+
         //setContentView(R.layout.activity_main);
         //TextView curinfo = (TextView) findViewById(R.id.curinfo );
         //String sweeknow = curinfo.getText().toString();
@@ -80,11 +102,11 @@ public class printpreview extends Activity {
                         "</head>" +
                         "<body>" +
                         "<table class=\"info\">" +
-                        "<tr><td colspan=\"2\">"+arrdate[0]+"</td><td colspan=\"2\">"+arrdate[27]+"</td><td>Avdelning</td></tr>" +
-                        "<tr><td>Barnets namn</td><td>Persnr</td><td colspan=\"2\">Adress</td><td>Telefon</td></tr>" +
-                        "<tr><td>Vårdnadshavare 1</td><td>Persnr</td><td>Arbetsplats</td><td>Telefon arbete</td><td>Mobil</td></tr>" +
-                        "<tr><td>Vårdnadshavare 2</td><td>Persnr</td><td>Arbetsplats</td><td>Telefon arbete</td><td>Mobil</td></tr>" +
-                        "<tr><td colspan=\"2\">Epost1</td><td colspan=\"3\">Epost2</td></tr>" +
+                        "<tr><td colspan=\"2\">"+arrdate[0]+"</td><td colspan=\"2\">"+arrdate[27]+"</td><td>"+department+"</td></tr>" +
+                        "<tr><td>"+kidsname+"</td><td>"+kidspersnr+"</td><td colspan=\"2\">"+address+"</td><td>"+phone+"</td></tr>" +
+                        "<tr><td>"+parent1+"</td><td>"+p1persnr+"</td><td>"+p1work +"</td><td>"+p1workphone+"</td><td>"+p1mobile +"</td></tr>" +
+                        "<tr><td>"+parent2+"</td><td>"+p2persnr+"</td><td>"+p2work+"</td><td>"+p2workphone +"</td><td>"+p2mobile+"</td></tr>" +
+                        "<tr><td colspan=\"2\">"+p1mail+"</td><td colspan=\"3\">"+p2mail+"</td></tr>" +
                         "</table>" +
                         "<h1>Vecka " + sweeknow  +"-"+ endweek + "</h1>";
 
@@ -113,11 +135,11 @@ public class printpreview extends Activity {
                 // Modify so first char is uppercase
                 dayline[day] = Character.toUpperCase(dayline[day].charAt(0))
                         + dayline[day].subSequence(1, dayline[day].length()).toString();
-                Log.d("Fetched day-date:", dayline[day]);
+                //Log.d("Fetched day-date:", dayline[day]);
                 htmlDocument = htmlDocument + "<tr>";
                 htmlDocument = htmlDocument + "<td class=\"date\" >" + dayline[day] + "</td>";
                 htmlDocument = htmlDocument + "</tr>";
-                Log.d("Fetched day-date:", arrdate[day] + "-" + arrday[day]);
+                //Log.d("Fetched day-date:", arrdate[day] + "-" + arrday[day]);
 
                 eventline[day] = "";
 
@@ -130,7 +152,7 @@ public class printpreview extends Activity {
                             .format(new Date(ds));
 
                     if (rstart.equals(arrdate[day])) {
-                        Log.d("Match and arrday=", arrdate[day]);
+                        //Log.d("Match and arrday=", arrdate[day]);
                         // Fetch event end time
                         String end = Constants.arreventsStore[x][3];
                         Long de = Long.valueOf(end);
@@ -152,7 +174,7 @@ public class printpreview extends Activity {
                                 TimeUnit.MILLISECONDS.toHours(dur),
                                 TimeUnit.MILLISECONDS.toMinutes(dur)-TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(dur))
                         );
-                        Log.d("sdur: ", sdur);
+                        //Log.d("sdur: ", sdur);
 
                         eventline[day] = starttime + "-" + endtime + "(" + sdur + ")" + "-" + Constants.arreventsStore[x][1];
                         htmlDocument = htmlDocument + "<tr><td>" + eventline[day] + "</td></tr>";
