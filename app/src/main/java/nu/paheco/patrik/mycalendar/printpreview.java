@@ -75,9 +75,8 @@ public class printpreview extends Activity {
         }
         */
 
-            // Strings for html-code
+        // Strings for html-code
         String[] dayline;
-        //String[] dayline14;
         String[] eventline;
 
         Integer noofevents = Constants.noofevents;
@@ -85,6 +84,7 @@ public class printpreview extends Activity {
 
 
         // Start create html for webview
+        // Upper table with info about parents and kid
         String htmlDocument =
                 "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">" +
                         "<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\" xml:lang=\"en\">" +
@@ -110,10 +110,45 @@ public class printpreview extends Activity {
                         "</table>" +
                         "<h1>Vecka " + sweeknow  +"-"+ endweek + "</h1>";
 
-
-
         dayline=new String [30];
         eventline = new String[100];
+
+        htmlDocument = htmlDocument + "<table>" +
+        "<tr>" +
+        "<td>Vecka " + sweeknow +
+        "<td>Barnet lämnas klockan</td>" +
+        "<td>Barnet hämtas klockan</td>" +
+        "<td>Antal timmar/dag</td>" +
+        "</tr>";
+
+        for (int wl=0; wl<5; wl++) {
+            arrday[wl] = Character.toUpperCase(arrday[wl].charAt(0))
+                    + arrday[wl].subSequence(1, arrday[wl].length()).toString();
+
+            htmlDocument = htmlDocument + "<tr>" +
+            "<td>" + arrday[wl] + "</td>";
+
+            // Loop through events
+            for (int x = 0; x < noofevents - 1; x++) {
+                // Find date for event
+                String start = Constants.arreventsStore[x][2];
+                Long ds =   Long.valueOf(start);
+                String rstart = new SimpleDateFormat("yyyy/MM/dd")
+                        .format(new Date(ds));
+
+                if (rstart.equals(arrdate[wl])) {
+                    String starttime = new SimpleDateFormat("HH:mm").format(new Date(ds));
+
+                    htmlDocument = htmlDocument + "<td>S:" + starttime +"</td>";
+                }
+            }
+
+
+            htmlDocument = htmlDocument + "</tr>";
+        }
+
+        htmlDocument = htmlDocument +"</table>";
+
 
         int startday=0;
         int endday=0;

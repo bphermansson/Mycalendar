@@ -123,10 +123,17 @@ public class Main extends Activity {
        // String selcalid="";
         // Add items to array
         for (int i = 0; i < calid.length; i++) {
-            Log.d("calendar1: ", calid[i][0]);
+
+            Log.d("calendar1: ", calid[i][0] + "-" + calid[i][1]);
             //temp = calid[i][0] + "-" + calid[i][1];
             //items.add(temp);
+            // Add calendar names to dropdown
             items.add(calid[i][1]);
+            // Store
+            //int arrPos = Integer.valueOf(calid[i][0]); // arrPos = calendar id
+            //Log.d("arrPos: ", String.valueOf(arrPos));
+            Constants.calidArr[i]=calid[i][0];
+
         }
         // Add to spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
@@ -152,7 +159,10 @@ public class Main extends Activity {
                 getPreferences(MODE_PRIVATE).edit().putString("calpos",String.valueOf(position)).commit();
                 Log.d("Stored: ", String.valueOf(position));
                 // Store position/id
-                Constants.id = position;
+                Constants.pos = position;
+                //Constants.calname = items.get(position);
+                Log.d("Selected: ", Constants.calname);
+                //Constants.id = calid[i][0];
 
                 // Find events and add them to Gui
                 Log.d("Call: ", "caldatanow");
@@ -408,9 +418,12 @@ public class Main extends Activity {
     //                      Integer nextday, Integer nextmonth, Integer nextyear)
     public String caldatanow(String calstartdate, String calenddate)
     {
-        Integer id = Constants.id;
+        Integer pos = Constants.pos;
+        //String calname = Constants.calname;
+        String sid = Constants.calidArr[pos];
+
         // Here we go through the calendar and find events.
-        Log.d("In caldatanow: ", calstartdate +"-"+ calenddate + ". Calid= "+ id);
+        Log.d("In caldatanow: ", calstartdate +"-"+ calenddate + ". pos="+ pos + " sid = " + sid);
 
         //Oskars calendar has id 12
         //String calendarID="12";
@@ -443,20 +456,24 @@ public class Main extends Activity {
         String dtStart = Long.toString(t.toMillis(false));
         t.set(59, 59, 23, iedaydate, iemonthdate, ieyeardate);
         String dtEnd = Long.toString(t.toMillis(false));
+
         Log.d("caldata - Selection start: ", dtStart);
         Log.d("caldata - Selection end: ", dtEnd);
+        //Log.d("caldata - Calname: ", calname);
 
         // Convert calenderid intcalid to string
-        String scalid = String.valueOf(Constants.id+1);
+//        String scalid = String.valueOf(Constants.id+1);
 
         Cursor cur = null;
         ContentResolver cr = getContentResolver();
         Uri uri = CalendarContract.Events.CONTENT_URI;
 
         String myselection = "((" + CalendarContract.Events.DTSTART + " <= ?) AND (" + CalendarContract.Events.DTEND + " >= ?) AND (" + CalendarContract.Events.CALENDAR_ID + " = ?))";
-        String[] mysqlargs= new String[] {dtEnd, dtStart, scalid};
+        //String myselection = "((" + CalendarContract.Events.DTSTART + " <= ?) AND (" + CalendarContract.Events.DTEND + " >= ?) AND (" + CalendarContract.Calendars.NAME + " = ?))";
 
-        Log.d("In caldatanow", mysqlargs[0] +"-"+ mysqlargs[1]);
+        String[] mysqlargs= new String[] {dtEnd, dtStart, sid};
+
+        Log.d("In caldatanow, args", mysqlargs[0] +"-"+ mysqlargs[1]);
 
         cur = cr.query(
                 uri,
@@ -820,6 +837,7 @@ public class Main extends Activity {
 
     public String[][] listCals() {
         // List calendars
+        Log.d("In listCals", "onCreate");
         String[] projection = {CalendarContract.Calendars._ID,
                 CalendarContract.Calendars.NAME,
                 CalendarContract.Calendars.OWNER_ACCOUNT,
@@ -861,10 +879,11 @@ public class Main extends Activity {
             calid[count][1]=name;
             count++;
 
-            /*
-            Log.d("cal id", sid);
+
+            Log.d("cal id", String.valueOf(count) + "-" + sid + " - " + name);
             Log.d("cal name", name);
             Log.d("cal owner", owner);
+            /*
             Log.d("cal type", type);
             Log.d("cal dname", dname);
             */
