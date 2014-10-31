@@ -23,17 +23,17 @@ import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by user on 10/10/14.
+ * Created by user on 10/29/14.
  */
 
 
-public class printpreview extends Activity {
+public class overview extends Activity {
     private WebView mWebView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("Printpreview", "In onCreate()");
+        Log.d("Overview", "In onCreate()");
 
         // Get stored shared settings from "settings"
         String kidsname = getSharedPreferences("settings", MODE_PRIVATE).getString("kidsname", "");
@@ -61,13 +61,23 @@ public class printpreview extends Activity {
         //TextView curinfo = (TextView) findViewById(R.id.curinfo );
         //String sweeknow = curinfo.getText().toString();
         String sweeknow = Constants.week;
-        Integer iweeknow = Integer.valueOf(sweeknow);
-        Integer endweek = Integer.valueOf(sweeknow)+5;
+        Integer endweek = Integer.valueOf(sweeknow)+4;
         Log.d("Fetched week:", sweeknow);
         String[] arrday = Constants.arrdayStore;
         //String[] arrDayMonth = Constants.arrdayMonthStore;
         String[] arrdate = Constants.arrdateStore;
         Log.d("enddate: ", arrdate[27]);
+
+        //Test
+        /*
+        for (int mday=0; mday<28; mday++) {
+            Log.d("Weekday: ", arrday[mday]);
+        }
+        */
+
+        // Strings for html-code
+        String[] dayline;
+        String[] eventline;
 
         Integer noofevents = Constants.noofevents;
         Log.d("No of events:", String.valueOf(noofevents));
@@ -82,12 +92,11 @@ public class printpreview extends Activity {
                         "<title>Mandagher</title>" +
                         "<style type=\"text/css\">" +
                         "h1 { font-size: 12pt}" +
-                        "table.cal {border:1px solid black;border-collapse: collapse; width: 45%; float:left; margin: 3px}" +
+                        "table.cal {border:1px solid black;border-collapse: collapse; width: 50%; float:left}" +
                         "table.info {width: 100%}" +
                         "tr { border:1px solid black; }" +
                         "td { border: 1px solid black; padding: 3px;}" +
                         "td.date { width: 100%; background-color: #CCFFCC; font-weight: bold;}" +
-                        "td.week { width: 100%; font-weight: bold;}" +
 
                         "</style>" +
                         "</head>" +
@@ -101,67 +110,84 @@ public class printpreview extends Activity {
                         "</table>" +
                         "<h1>Vecka " + sweeknow  +"-"+ endweek + "</h1>";
 
-        //dayline=new String [30];
-        //eventline = new String[100];
+        dayline=new String [30];
+        eventline = new String[100];
 
-        // Draw two tables beside each other.
-        for (int z=0;z<2;z++) {
-            // Draw table with three first weeks, then second three weeks.
+        int startday=0;
+        int endday=0;
+        // Loop through dates
+        // Run two times, one for each table
+        for (Integer run=0; run<2; run++) {
+            if (run==0) {
+                startday= 0;
+                endday = 14;
+            }
+            else {
+                startday= 14;
+                endday = 28;
+            }
             htmlDocument = htmlDocument + "<table class=\"cal\">";
-            for (int y = 0; y < 3; y++) {
+            // First run day 0-13, second run 14-27
+            for (int day = startday; day < endday; day++) {
+                dayline[day] = arrday[day] + " " + arrdate[day];
+                // Modify so first char is uppercase
+                dayline[day] = Character.toUpperCase(dayline[day].charAt(0))
+                        + dayline[day].subSequence(1, dayline[day].length()).toString();
+                //Log.d("Fetched day-date:", dayline[day]);
+                htmlDocument = htmlDocument + "<tr>";
+                htmlDocument = htmlDocument + "<td class=\"date\" >" + dayline[day] + "</td>";
+                htmlDocument = htmlDocument + "</tr>";
+                //Log.d("Fetched day-date:", arrdate[day] + "-" + arrday[day]);
 
-                htmlDocument = htmlDocument + "<tr>" +
-                        "<td class=\"week\">Vecka " + sweeknow +
-                        "<td>Barnet lämnas klockan</td>" +
-                        "<td>Barnet hämtas klockan</td>" +
-                        "<td>Antal timmar/dag</td>" +
-                        "</tr>";
+                eventline[day] = "";
 
-                for (int wl = 0; wl < 5; wl++) {
-                    arrday[wl] = Character.toUpperCase(arrday[wl].charAt(0))
-                            + arrday[wl].subSequence(1, arrday[wl].length()).toString();
+                // Loop through events
+                for (int x = 0; x < noofevents - 1; x++) {
+                    // Find date for event
+                    String start = Constants.arreventsStore[x][2];
+                    Long ds = Long.valueOf(start);
+                    String rstart = new SimpleDateFormat("yyyy/MM/dd")
+                            .format(new Date(ds));
 
-                    htmlDocument = htmlDocument + "<tr>" +
-                            "<td>" + arrday[wl] + "</td>";
+                    if (rstart.equals(arrdate[day])) {
+                        //Log.d("Match and arrday=", arrdate[day]);
+                        // Fetch event end time
+                        String end = Constants.arreventsStore[x][3];
+                        Long de = Long.valueOf(end);
+                        //Convert to real time
+                        String starttime = new SimpleDateFormat("HH:mm").format(new Date(ds));
+                        String endtime = new SimpleDateFormat("HH:mm").format(new Date(de));
 
-                    // Loop through events
-                    for (int x = 0; x < noofevents - 1; x++) {
-                        // Find start time for event
-                        String start = Constants.arreventsStore[x][2];
-                        Long ds = Long.valueOf(start);
-                        String rstart = new SimpleDateFormat("yyyy/MM/dd")
-                                .format(new Date(ds));
+                        // Starttime and endtime in millis
+                        String sstart[] = starttime.split(":");
+                        int hstart = Integer.parseInt (sstart[0]);
+                        int mstart = Integer.parseInt (sstart[1]);
 
-                        if (rstart.equals(arrdate[wl])) {
-                            // Find end time
-                            String end = Constants.arreventsStore[x][3];
-                            Long de = Long.valueOf(end);
-                            // Format time values
-                            String starttime = new SimpleDateFormat("HH:mm").format(new Date(ds));
-                            String endtime = new SimpleDateFormat("HH:mm").format(new Date(de));
+                        String send[] = endtime.split(":");
+                        int hend = Integer.parseInt (send[0]);
+                        int mend = Integer.parseInt (send[1]);
 
-                            // Get duration
-                            Long idur = de - ds;
-                            // Convert duration in milliseconds to duration in hours & minutes
-                            String sdur = String.format("%dh %dm",
-                                    TimeUnit.MILLISECONDS.toHours(idur),
-                                    TimeUnit.MILLISECONDS.toMinutes(idur) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(idur))
-                            );
-                            Log.d("sdur: ", sdur);
+                        Long dur = (TimeUnit.HOURS.toMillis(hend) + TimeUnit.MINUTES.toMillis(mend))-(TimeUnit.HOURS.toMillis(hstart) + TimeUnit.MINUTES.toMillis(mstart));
+                        String sdur = String.format("%d h, %d m",
+                                TimeUnit.MILLISECONDS.toHours(dur),
+                                TimeUnit.MILLISECONDS.toMinutes(dur)-TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(dur))
+                        );
+                        //Log.d("sdur: ", sdur);
 
-                            // Add info to Gui
-                            htmlDocument = htmlDocument + "<td>" + starttime + "</td>";
-                            htmlDocument = htmlDocument + "<td>" + endtime + "</td>";
-                            htmlDocument = htmlDocument + "<td>" + sdur + "</td>";
-                        }
+                        eventline[day] = starttime + "-" + endtime + "(" + sdur + ")" + "-" + Constants.arreventsStore[x][1];
+                        htmlDocument = htmlDocument + "<tr><td>" + eventline[day] + "</td></tr>";
+                        //Log.d("?", "Match!");
+                        //Log.d("Event: ", arrdate[day] + "-" + arrday[day] + ":" +
+                        //        starttime + "-" + endtime + "-" + Constants.arreventsStore[x][1]);
                     }
-                    htmlDocument = htmlDocument + "</tr>";
                 }
-                iweeknow++;
-                sweeknow = String.valueOf(iweeknow);
+                //htmlDocument = htmlDocument + "</tr>";
             }
             htmlDocument = htmlDocument + "</table>";
         }
+        //Log.d("test", dayline[1]);
+        //Log.d("test", eventline[1]);
+
         // End html-line
         htmlDocument = htmlDocument +
                 "</body></html>";

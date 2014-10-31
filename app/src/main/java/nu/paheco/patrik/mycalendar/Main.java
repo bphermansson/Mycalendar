@@ -550,9 +550,9 @@ public class Main extends Activity {
         for (int x=0; x<c; x++ ) {
             //Startdate
             Long sdate = Long.parseLong(eventsall[x][2]);
-            String ssdate = String.valueOf(sdate);
+            //String ssdate = String.valueOf(sdate);
             Long edate = Long.parseLong(eventsall[x][3]);
-            String sedate = String.valueOf(edate);
+            //String sedate = String.valueOf(edate);
 
             //Log.d("Results", x + "-" + eventsall[x][1]);
             //Log.d("ssdate", x + "-" + ssdate);

@@ -5,31 +5,7 @@
     android:layout_height="match_parent"
     >
 
-<ImageButton
-    android:layout_width="100dp"
-    android:layout_height="25dp"
-    android:text="@string/print"
-    android:id="@+id/printbtn"
-    />
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="match_parent"
-    android:background="@color/bg"
-    android:layout_below="@id/btnPrint"
-    >
-
-    <WebView
-        android:id="@+id/webInfo"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@id/btnPrint"
-        android:text="Webview"
-        >
-    </WebView>
-
-</ScrollView>
-    <Button
+<Button
         android:id="@+id/btnBack"
         android:onClick="back"
         android:layout_height="45dp"
@@ -37,13 +13,39 @@
         android:text="Back"
         android:background="#25db87"
         />
-    <Button
-        android:id="@+id/btnPrint"
-        android:onClick="print"
-        android:layout_height="45dp"
-        android:layout_width="85dp"
-        android:layout_toEndOf="@id/btnBack"
-        android:text="Print"
-        android:background="#2dc46c"
+<Button
+    android:id="@+id/printbtn"
+    android:layout_height="45dp"
+    android:layout_width="85dp"
+    android:layout_toEndOf="@id/btnBack"
+    android:text="@string/print"
+    android:background="#25db87"
+    android:onClick="print"
+    />
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:layout_below="@id/printbtn"
+    android:id="@+id/scroll"
+    >
+
+    <WebView
+        android:id="@+id/webInfo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        >
+    </WebView>
+
+</ScrollView>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="20dp"
+        android:layout_below="@id/webInfo"
+        android:text="©Paheco 2014"
         />
+
+
 </RelativeLayout>
