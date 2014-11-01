@@ -13,6 +13,8 @@ import android.provider.Settings;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.HapticFeedbackConstants;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -174,7 +176,6 @@ public class Main extends Activity {
             }
         });
     }
-
     // Button printpreview clicked
     public void printpreview(View v) {
         // "Brm"
@@ -198,8 +199,7 @@ public class Main extends Activity {
         Log.d("Call ","settings");
         startActivityForResult(settings, 0);
     }
-
-        // Button prev clicked
+    // Button prev clicked
     public void prevweek(View v) {
         // "Brm"
         v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
@@ -213,7 +213,6 @@ public class Main extends Activity {
         String dir="forward";
         changeweek(dir);
     }
-
     // Today 'clicked'
     public void today(View v) {
         String todaysdate = todaysdate();
@@ -236,7 +235,6 @@ public class Main extends Activity {
         caldatanow(date,calenddate);
 
     }
-
     public void changeweek(String dir) {
         Integer idir=0;
         if (dir=="forward") {
@@ -301,7 +299,6 @@ public class Main extends Activity {
         caldatanow(newdate,enddate);
 
     }
-
     public String listDays(String date) {
         Log.d("Class: ", "listDays");
         //Log.d("Start date: ", date);
@@ -339,11 +336,11 @@ public class Main extends Activity {
         TextView txtdate5 = (TextView)findViewById(R.id.date5);
         TextView txtdate6 = (TextView)findViewById(R.id.date6);
 
-        // Loop through weekdays and store four weeks
-        String[] arrDay = new String[28];
-        String[] arrDate = new String[28];
+        // Loop through weekdays and store six weeks
+        String[] arrDay = new String[42];
+        String[] arrDate = new String[42];
         Integer c=0;
-        for (c=0; c<28; c++ ) {
+        for (c=0; c<42; c++ ) {
             // Get weekday
             arrDay[c] = dayFormat.format(calendar.getTime());
             // Get date
@@ -387,7 +384,6 @@ public class Main extends Activity {
         String dummy="1";
         return(dummy);
     }
-
     public String findLastMon() {
         Log.d(": ", "findLastMon");
         Calendar calendar = Calendar.getInstance();
@@ -437,7 +433,7 @@ public class Main extends Activity {
         Integer imonthdate=Integer.parseInt(smonthdate)-1;
         String sdaydate=separated[2];
         Integer idaydate=Integer.parseInt(sdaydate);
-        Log.d("In caldatanow: ", "Start date= "+ sdaydate);
+        Log.d("In caldatanow: ", "Start date= "+ syeardate+"-"+smonthdate+"-"+sdaydate);
 
         // End date
         separated = calenddate.split("/");
@@ -447,7 +443,7 @@ public class Main extends Activity {
         Integer iemonthdate=Integer.parseInt(smonthdate)-1;
         sdaydate=separated[2];
         Integer iedaydate=Integer.parseInt(sdaydate);
-        Log.d("In caldatanow: ", "End date= "+ sdaydate);
+        Log.d("In caldatanow: ", "End date= "+ syeardate+"-"+smonthdate+"-"+sdaydate);
 
         // Convert dates to epoch
         //http://pastebin.com/mw4fRJ3D
@@ -592,7 +588,7 @@ public class Main extends Activity {
                     Long dur = (TimeUnit.HOURS.toMillis(hend) + TimeUnit.MINUTES.toMillis(mend))-(TimeUnit.HOURS.toMillis(hstart) + TimeUnit.MINUTES.toMillis(mstart));
                     //Log.d("dur: ", String.valueOf(dur));
 
-                    String sdur = String.format("%d,%d",
+                    String sdur = String.format("%dh%dm",
                             TimeUnit.MILLISECONDS.toHours(dur),
                             TimeUnit.MILLISECONDS.toMinutes(dur)-TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(dur))
                     );
@@ -834,7 +830,6 @@ public class Main extends Activity {
         String dummy="1";
         return(dummy);
     }
-
     public String[][] listCals() {
         // List calendars
         Log.d("In listCals", "onCreate");
@@ -894,7 +889,6 @@ public class Main extends Activity {
         return (calid);
 
     }
-
     public String findnextweek (Integer weeknow) {
         Log.d("Class: ", "findnextweek");
         String sweeknow=String.valueOf(weeknow);
@@ -902,9 +896,9 @@ public class Main extends Activity {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.WEEK_OF_YEAR, weeknow);
         // Next week
-        weeknow = weeknow +4;
-        calendar.set(Calendar.WEEK_OF_YEAR,weeknow);
-        //calendar.add(Calendar.WEEK_OF_YEAR,+1);
+        //weeknow = weeknow +4;
+        //calendar.set(Calendar.WEEK_OF_YEAR,weeknow);
+        calendar.add(Calendar.WEEK_OF_YEAR,+5);
 
         //Find next sunday
         // Calendar is at next monday, move one day back
@@ -916,15 +910,14 @@ public class Main extends Activity {
         String nextsday = String.format("%02d",calendar.get(Calendar.DATE));
 
         weeknow = calendar.get(Calendar.WEEK_OF_YEAR);
-        Log.d("Week now +4 : ", sweeknow);
+        Log.d("Week now +5 : ", String.valueOf(weeknow));
 
         // Convert to strings
         String nextsyear = String.valueOf(nextyear);
         String nextdate = nextsyear + "/" + nextsmonth  + "/" + nextsday;
-        Log.d("Next sunday is: ", nextdate);
+        Log.d("Last sunday is: ", nextdate);
         return (nextdate);
     }
-
     public String todaysdate() {
         // Get today's date
         Calendar calendar = Calendar.getInstance();
@@ -948,6 +941,29 @@ public class Main extends Activity {
 
         return syear + "/" + smonth + "/" + sday;
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        if (id == R.id.action_help) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

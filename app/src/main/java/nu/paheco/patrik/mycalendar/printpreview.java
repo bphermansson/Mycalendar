@@ -17,6 +17,7 @@ import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -54,8 +55,7 @@ public class printpreview extends Activity {
         String p1mail = getSharedPreferences("settings", MODE_PRIVATE).getString("p1mail","");
         String p2mail = getSharedPreferences("settings", MODE_PRIVATE).getString("p2mail","");
 
-
-        Log.d ("Stored name: ", kidsname);
+        //Log.d ("Stored name: ", kidsname);
 
         //setContentView(R.layout.activity_main);
         //TextView curinfo = (TextView) findViewById(R.id.curinfo );
@@ -67,11 +67,10 @@ public class printpreview extends Activity {
         String[] arrday = Constants.arrdayStore;
         //String[] arrDayMonth = Constants.arrdayMonthStore;
         String[] arrdate = Constants.arrdateStore;
-        Log.d("enddate: ", arrdate[27]);
+        Log.d("enddate: ", arrdate[41]);
 
         Integer noofevents = Constants.noofevents;
         Log.d("No of events:", String.valueOf(noofevents));
-
 
         // Start create html for webview
         // Upper table with info about parents and kid
@@ -82,10 +81,10 @@ public class printpreview extends Activity {
                         "<title>Mandagher</title>" +
                         "<style type=\"text/css\">" +
                         "h1 { font-size: 12pt}" +
-                        "table.cal {border:1px solid black;border-collapse: collapse; width: 45%; float:left; margin: 3px}" +
+                        "table.cal {border:1px solid black;border-collapse: collapse; width: 45%; float:left; margin:3px;}" +
                         "table.info {width: 100%}" +
                         "tr { border:1px solid black; }" +
-                        "td { border: 1px solid black; padding: 3px;}" +
+                        "td { border: 1px solid black; padding: 3px; font-size: 11px}" +
                         "td.date { width: 100%; background-color: #CCFFCC; font-weight: bold;}" +
                         "td.week { width: 100%; font-weight: bold;}" +
 
@@ -93,7 +92,8 @@ public class printpreview extends Activity {
                         "</head>" +
                         "<body>" +
                         "<table class=\"info\">" +
-                        "<tr><td colspan=\"2\">"+arrdate[0]+"</td><td colspan=\"2\">"+arrdate[27]+"</td><td>"+department+"</td></tr>" +
+                        "<th>Schema för " + kidsname + ", " + arrdate[0] + "-" + arrdate[41] + "</th>" +
+                        "<tr><td colspan=\"2\">"+arrdate[0]+"</td><td colspan=\"2\">"+arrdate[41]+"</td><td>"+department+"</td></tr>" +
                         "<tr><td>"+kidsname+"</td><td>"+kidspersnr+"</td><td colspan=\"2\">"+address+"</td><td>"+phone+"</td></tr>" +
                         "<tr><td>"+parent1+"</td><td>"+p1persnr+"</td><td>"+p1work +"</td><td>"+p1workphone+"</td><td>"+p1mobile +"</td></tr>" +
                         "<tr><td>"+parent2+"</td><td>"+p2persnr+"</td><td>"+p2work+"</td><td>"+p2workphone +"</td><td>"+p2mobile+"</td></tr>" +
@@ -103,6 +103,7 @@ public class printpreview extends Activity {
 
         //dayline=new String [30];
         //eventline = new String[100];
+        Integer offset=0;
 
         // Draw two tables beside each other.
         for (int z=0;z<2;z++) {
@@ -117,12 +118,14 @@ public class printpreview extends Activity {
                         "<td>Antal timmar/dag</td>" +
                         "</tr>";
 
-                for (int wl = 0; wl < 5; wl++) {
+                for (int wl = 0+offset; wl < 5+offset; wl++) {
                     arrday[wl] = Character.toUpperCase(arrday[wl].charAt(0))
                             + arrday[wl].subSequence(1, arrday[wl].length()).toString();
 
                     htmlDocument = htmlDocument + "<tr>" +
                             "<td>" + arrday[wl] + "</td>";
+
+                    int eventFlag = 0;
 
                     // Loop through events
                     for (int x = 0; x < noofevents - 1; x++) {
@@ -133,6 +136,7 @@ public class printpreview extends Activity {
                                 .format(new Date(ds));
 
                         if (rstart.equals(arrdate[wl])) {
+                            eventFlag = 1; // An event was found
                             // Find end time
                             String end = Constants.arreventsStore[x][3];
                             Long de = Long.valueOf(end);
@@ -155,11 +159,21 @@ public class printpreview extends Activity {
                             htmlDocument = htmlDocument + "<td>" + sdur + "</td>";
                         }
                     }
+                    if (eventFlag == 0) {   // No events this day, fill row with empty cells
+                        htmlDocument = htmlDocument + "<td>&nbsp</td>";
+                        htmlDocument = htmlDocument + "<td>&nbsp</td>";
+                        htmlDocument = htmlDocument + "<td>&nbsp</td>";
+                    }
+                    // End row
                     htmlDocument = htmlDocument + "</tr>";
                 }
+                // Go to next week
                 iweeknow++;
                 sweeknow = String.valueOf(iweeknow);
+                offset=offset+7;
             }
+            // Make an empty row with no border and end the table
+            htmlDocument = htmlDocument + "<tr><td style=\"border: 0px;\">&nbsp</td></tr>";
             htmlDocument = htmlDocument + "</table>";
         }
         // End html-line
