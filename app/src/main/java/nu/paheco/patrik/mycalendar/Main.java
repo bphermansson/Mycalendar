@@ -574,7 +574,7 @@ public class Main extends Activity {
                     //Log.d("cal date from gui", caldate);
                     //Log.d("datestart: ",datestart);
                     String sdesc = eventsall[x][1];
-                    //Log.d("Desc", sdesc);
+                    Log.d("Desc", sdesc);
 
                     // Starttime and endtime in millis
                     String sstart[] = timestart.split(":");
@@ -597,7 +597,12 @@ public class Main extends Activity {
 
                     TextView tvact = (TextView ) findViewById(textViewIDsact[tc]);
                     //tvact.append(sdesc+"   "+getResources().getString(R.string.kl)+" "+timestart+"-"+timeend+"\n");
-                    tvact.append(timestart+"-"+timeend + " (" + sdur  + "): " + sdesc+"\n");
+                    if (sdesc.equals("Ledig")) {
+                        tvact.append("Ledig\n");
+                    }
+                    else {
+                        tvact.append(timestart + "-" + timeend + " (" + sdur + "): " + sdesc + "\n");
+                    }
 
                 }
 

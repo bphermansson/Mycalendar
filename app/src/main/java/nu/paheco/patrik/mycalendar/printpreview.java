@@ -145,6 +145,7 @@ public class printpreview extends Activity {
 
                     // Loop through events
                     for (int x = 0; x < noofevents - 1; x++) {
+
                         // Find start time for event
                         String start = Constants.arreventsStore[x][2];
                         Long ds = Long.valueOf(start);
@@ -153,6 +154,9 @@ public class printpreview extends Activity {
 
                         if (rstart.equals(arrdate[wl])) {
                             eventFlag = 1; // An event was found
+                            // Find event description
+                            String desc = Constants.arreventsStore[x][1];
+                            Log.d("Desc: ", desc);
                             // Find end time
                             String end = Constants.arreventsStore[x][3];
                             Long de = Long.valueOf(end);
@@ -170,9 +174,16 @@ public class printpreview extends Activity {
                             Log.d("sdur: ", sdur);
 
                             // Add info to Gui
-                            htmlDocument = htmlDocument + "<td>" + starttime + "</td>";
-                            htmlDocument = htmlDocument + "<td>" + endtime + "</td>";
-                            htmlDocument = htmlDocument + "<td>" + sdur + "</td>";
+                            if (desc.equals("Ledig")) {
+                                htmlDocument = htmlDocument + "<td>&nbsp</td>";
+                                htmlDocument = htmlDocument + "<td>&nbsp</td>";
+                                htmlDocument = htmlDocument + "<td>" + desc + "</td>";
+                            }
+                            else {
+                                htmlDocument = htmlDocument + "<td>" + starttime + "</td>";
+                                htmlDocument = htmlDocument + "<td>" + endtime + "</td>";
+                                htmlDocument = htmlDocument + "<td>" + sdur + "</td>";
+                            }
                         }
                     }
                     if (eventFlag == 0) {   // No events this day, fill row with empty cells
@@ -187,10 +198,12 @@ public class printpreview extends Activity {
                 iweeknow++;
                 sweeknow = String.valueOf(iweeknow);
                 offset=offset+7;
-                htmlDocument = htmlDocument + "<tr><td style=\"border: 0px;\">&nbsp</td></tr>";
 
+                // Make an empty row with no border and end the table, but not on the tables in the bottom
+                if (y != 2) {
+                    htmlDocument = htmlDocument + "<tr><td style=\"border: 0px;\">&nbsp</td></tr>";
+                }
             }
-            // Make an empty row with no border and end the table
             htmlDocument = htmlDocument + "</table>";
         }
         // End html-line
