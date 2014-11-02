@@ -84,23 +84,39 @@ public class printpreview extends Activity {
                         "table.cal {border:1px solid black;border-collapse: collapse; width: 45%; float:left; margin:3px;}" +
                         "table.info {width: 100%}" +
                         "tr { border:1px solid black; }" +
-                        "td { border: 1px solid black; padding: 3px; font-size: 11px}" +
+                        "td { border: 1px solid black; padding: 3px; font-size: 16px}" +
                         "td.date { width: 100%; background-color: #CCFFCC; font-weight: bold;}" +
                         "td.week { width: 100%; font-weight: bold;}" +
+                        "td.50 { width: 50%; }" +
+                        "td.33 { width: 33%; }" +
+                        "td.25 { width: 25%; }" +
+                        "h1 {font-size: 22px}" +
 
                         "</style>" +
                         "</head>" +
                         "<body>" +
-                        "<table class=\"info\">" +
-                        "<th>Schema för " + kidsname + ", " + arrdate[0] + "-" + arrdate[41] + "</th>" +
-                        "<tr><td colspan=\"2\">"+arrdate[0]+"</td><td colspan=\"2\">"+arrdate[41]+"</td><td>"+department+"</td></tr>" +
-                        "<tr><td>"+kidsname+"</td><td>"+kidspersnr+"</td><td colspan=\"2\">"+address+"</td><td>"+phone+"</td></tr>" +
-                        "<tr><td>"+parent1+"</td><td>"+p1persnr+"</td><td>"+p1work +"</td><td>"+p1workphone+"</td><td>"+p1mobile +"</td></tr>" +
-                        "<tr><td>"+parent2+"</td><td>"+p2persnr+"</td><td>"+p2work+"</td><td>"+p2workphone +"</td><td>"+p2mobile+"</td></tr>" +
-                        "<tr><td colspan=\"2\">"+p1mail+"</td><td colspan=\"3\">"+p2mail+"</td></tr>" +
-                        "</table>" +
-                        "<h1>Vecka " + sweeknow  +"-"+ endweek + "</h1>";
+                        "<!--<table class=\"info\">" +
+                        "<th style=\"width: 30%;\">Schema för " + kidsname + ", " + arrdate[0] + "-" + arrdate[41] + "</th>" +
+                        "<tr><td colspan=\"2\">Från: <b>"+arrdate[0]+"</b></td><td colspan=\"2\">Till: <b>"+arrdate[41]+"</b></td><td>Avdelning: <b>"+department+"</b></td></tr>" +
+                        "<tr><td>Barnets namn: <br><b>"+kidsname+"</b></td><td>Barnets personnummer: <br><b>"+kidspersnr+"</b></td><td colspan=\"2\">Adress: <b>"+address+"</b></td><td>Telefon: <b>"+phone+"</b></td></tr>" +
+                        "<tr><td>Namn vårdnadshavare 1: <b>"+parent1+"</b></td><td>Personnummer vårdnadshavare 1: <b>"+p1persnr+"</b></td><td>Arbetsplats vårdnadshavare 1: "+p1work +"</td><td>"+p1workphone+"</td><td>"+p1mobile +"</td></tr>" +
+                        "<tr><td>Namn vårdnadshavare 2: <b>"+parent2+"</b></td><td>Personnummer vårdnadshavare 2: <b>"+p2persnr+"</b></td><td>Arbetsplats vårdnadshavare 2: "+p2work+"</td><td>"+p2workphone +"</td><td>"+p2mobile+"</td></tr>" +
+                        "<tr><td colspan=\"2\">E-post vårdnadshavare 1: "+p1mail+"</td><td colspan=\"3\">E-post vårdnadshavare 2: "+p2mail+"</td></tr>" +
 
+
+                        "</table>-->" +
+                        "<h1>Schema för " + kidsname + "<br>Vecka " + sweeknow  +"-"+ endweek + ", " + arrdate[0] + "-" + arrdate[41] + "</h1>";
+
+                        htmlDocument = htmlDocument + "<table style=\"width: 100%; border: \"collapse\"; font-size: \"14px\";>" +
+                        "<!--<tr><td>Schema för <b>" + arrdate[0] + "-" + arrdate[41] + "</b></td></tr>-->" +
+                        "<tr>" +
+                        "<td><b>" + kidspersnr +" - "+ kidsname + "</b>" + "<br>" + address + "<br>Telefon: " + phone + "<br>Avdelning: " + department + "</td>" +
+
+                        "</tr>" +
+                        "<tr><td><b>Vårdnadshavare 1</b><br> " + p1persnr + " - " + parent1 + "<br>Arbetsplats: " + p1work + "<br>Telefon arbete: " + p1workphone + "<br>Mobil: " + p1mobile + "<br>E-post: " + p1mail + "</td>" +
+                        "<td><b>Vårdnadshavare 2</b><br> " + p2persnr + " - " + parent2 + "<br>Arbetsplats: " + p2work + "<br>Telefon arbete: " + p2workphone + "<br>Mobil: " + p2mobile + "<br>E-post: " + p2mail + "</td></tr>" +
+
+                                "</table>";
         //dayline=new String [30];
         //eventline = new String[100];
         Integer offset=0;
@@ -171,9 +187,10 @@ public class printpreview extends Activity {
                 iweeknow++;
                 sweeknow = String.valueOf(iweeknow);
                 offset=offset+7;
+                htmlDocument = htmlDocument + "<tr><td style=\"border: 0px;\">&nbsp</td></tr>";
+
             }
             // Make an empty row with no border and end the table
-            htmlDocument = htmlDocument + "<tr><td style=\"border: 0px;\">&nbsp</td></tr>";
             htmlDocument = htmlDocument + "</table>";
         }
         // End html-line
