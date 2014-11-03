@@ -63,11 +63,12 @@ public class printpreview extends Activity {
         String sweeknow = Constants.week;
         Integer iweeknow = Integer.valueOf(sweeknow);
         Integer endweek = Integer.valueOf(sweeknow)+5;
-        Log.d("Fetched week:", sweeknow);
+        Log.d("Fetched week:", sweeknow + "-" + String.valueOf(endweek));
         String[] arrday = Constants.arrdayStore;
         //String[] arrDayMonth = Constants.arrdayMonthStore;
         String[] arrdate = Constants.arrdateStore;
-        Log.d("enddate: ", arrdate[41]);
+        Integer noofdays = 41;
+        Log.d("enddate: ", arrdate[noofdays]);
 
         Integer noofevents = Constants.noofevents;
         Log.d("No of events:", String.valueOf(noofevents));
@@ -84,7 +85,7 @@ public class printpreview extends Activity {
                         "table.cal {border:1px solid black;border-collapse: collapse; width: 45%; float:left; margin:3px;}" +
                         "table.info {width: 100%}" +
                         "tr { border:1px solid black; }" +
-                        "td { border: 1px solid black; padding: 3px; font-size: 16px}" +
+                        "td { border: 1px solid black; padding: 3px; font-size: 14px}" +
                         "td.date { width: 100%; background-color: #CCFFCC; font-weight: bold;}" +
                         "td.week { width: 100%; font-weight: bold;}" +
                         "td.50 { width: 50%; }" +
@@ -96,8 +97,8 @@ public class printpreview extends Activity {
                         "</head>" +
                         "<body>" +
                         "<!--<table class=\"info\">" +
-                        "<th style=\"width: 30%;\">Schema för " + kidsname + ", " + arrdate[0] + "-" + arrdate[41] + "</th>" +
-                        "<tr><td colspan=\"2\">Från: <b>"+arrdate[0]+"</b></td><td colspan=\"2\">Till: <b>"+arrdate[41]+"</b></td><td>Avdelning: <b>"+department+"</b></td></tr>" +
+                        "<th style=\"width: 30%;\">Schema för " + kidsname + ", " + arrdate[0] + "-" + arrdate[noofdays] + "</th>" +
+                        "<tr><td colspan=\"2\">Från: <b>"+arrdate[0]+"</b></td><td colspan=\"2\">Till: <b>"+arrdate[noofdays]+"</b></td><td>Avdelning: <b>"+department+"</b></td></tr>" +
                         "<tr><td>Barnets namn: <br><b>"+kidsname+"</b></td><td>Barnets personnummer: <br><b>"+kidspersnr+"</b></td><td colspan=\"2\">Adress: <b>"+address+"</b></td><td>Telefon: <b>"+phone+"</b></td></tr>" +
                         "<tr><td>Namn vårdnadshavare 1: <b>"+parent1+"</b></td><td>Personnummer vårdnadshavare 1: <b>"+p1persnr+"</b></td><td>Arbetsplats vårdnadshavare 1: "+p1work +"</td><td>"+p1workphone+"</td><td>"+p1mobile +"</td></tr>" +
                         "<tr><td>Namn vårdnadshavare 2: <b>"+parent2+"</b></td><td>Personnummer vårdnadshavare 2: <b>"+p2persnr+"</b></td><td>Arbetsplats vårdnadshavare 2: "+p2work+"</td><td>"+p2workphone +"</td><td>"+p2mobile+"</td></tr>" +
@@ -201,11 +202,19 @@ public class printpreview extends Activity {
 
                 // Make an empty row with no border and end the table, but not on the tables in the bottom
                 if (y != 2) {
-                    htmlDocument = htmlDocument + "<tr><td style=\"border: 0px;\">&nbsp</td></tr>";
+                    htmlDocument = htmlDocument + "<tr><td style=\"border: 0px;font-size: 3px\">&nbsp</td></tr>";
                 }
             }
             htmlDocument = htmlDocument + "</table>";
         }
+        htmlDocument = htmlDocument +
+                "<table style=\"width: 100%;border=\"0px\"" +
+                "<tr><td>Vårdnadshavares underskrift - datum</td>" +
+                "<td>Personalens underskrift - datum</tr>" +
+                "<tr><td style =\"font-size: 24px\">&nbsp</td>" +
+                "<td style =\"font-size: 24px\">&nbsp</td>" +
+                "</tr>";
+
         // End html-line
         htmlDocument = htmlDocument +
                 "</body></html>";

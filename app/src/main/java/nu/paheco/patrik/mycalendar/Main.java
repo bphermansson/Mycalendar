@@ -117,6 +117,8 @@ public class Main extends Activity {
         calstartdate = date;
         calenddate = nextdate;
 
+        Log.d("NEXTDATE", calenddate);
+
         // Populate dropdown with calendars name
         Spinner dropdown = (Spinner)findViewById(R.id.calSelect);
         // Create array for data
@@ -293,7 +295,7 @@ public class Main extends Activity {
         //sday = String.valueOf(day);
 
         String enddate = syear + "/" + smonth  + "/" + sday;
-        Log.d("End date: ", enddate);
+        Log.d("Changeweek - End date: ", enddate);
 
         listDays(newdate);
         caldatanow(newdate,enddate);
@@ -903,7 +905,7 @@ public class Main extends Activity {
         // Next week
         //weeknow = weeknow +4;
         //calendar.set(Calendar.WEEK_OF_YEAR,weeknow);
-        calendar.add(Calendar.WEEK_OF_YEAR,+5);
+        calendar.add(Calendar.WEEK_OF_YEAR,+6);
 
         //Find next sunday
         // Calendar is at next monday, move one day back
