@@ -238,6 +238,7 @@ public class Main extends Activity {
 
     }
     public void changeweek(String dir) {
+        Log.d("Class","changeweek");
         Integer idir=0;
         if (dir=="forward") {
             idir=1;
@@ -262,7 +263,7 @@ public class Main extends Activity {
         while (!weekDay.equals("måndag")) {
             calendar.add(calendar.DATE,-1);
             weekDay = dayFormat.format(calendar.getTime());
-            String sc = String.valueOf(c);
+            //String sc = String.valueOf(c);
             //Log.d("Count:" , sc);
             c++;
         }
@@ -271,7 +272,7 @@ public class Main extends Activity {
         calendar.add(Calendar.WEEK_OF_YEAR, idir);
         weeknow = calendar.get(Calendar.WEEK_OF_YEAR);
         sweeknow=String.valueOf(weeknow);
-        Log.d("Week next: ", sweeknow);
+        Log.d("Change week: Week next: ", sweeknow);
         String info = String.valueOf(weeknow);
         curinfo.setText(info);
         // Convert week to start date and end date
@@ -284,13 +285,14 @@ public class Main extends Activity {
 
         String newdate = syear + "/" + smonth  + "/" + sday;
         Log.d("New date: ", newdate);
-        calendar.add(Calendar.DATE,+7);
 
+        // Set end date. Move forward six weeks.
+        //calendar.add(Calendar.DATE,+7);
+        calendar.add(Calendar.WEEK_OF_YEAR,+6);
         year = calendar.get(Calendar.YEAR);
         smonth = String.format("%02d",calendar.get(Calendar.MONTH)+1);
         //day = calendar.get(Calendar.DATE);
         sday = String.format("%02d",calendar.get(Calendar.DATE));
-
         syear = String.valueOf(year);
         //sday = String.valueOf(day);
 
@@ -917,7 +919,7 @@ public class Main extends Activity {
         String nextsday = String.format("%02d",calendar.get(Calendar.DATE));
 
         weeknow = calendar.get(Calendar.WEEK_OF_YEAR);
-        Log.d("Week now +5 : ", String.valueOf(weeknow));
+        Log.d("Week now +6 : ", String.valueOf(weeknow));
 
         // Convert to strings
         String nextsyear = String.valueOf(nextyear);
@@ -965,9 +967,15 @@ public class Main extends Activity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent settings = new Intent(this, settings.class);
+            this.startActivity(settings);
+            Log.d("Call ","Settings");
             return true;
         }
         if (id == R.id.action_help) {
+            Intent help = new Intent(this, help.class);
+            this.startActivity(help);
+            Log.d("Call ","Help");
             return true;
         }
         return super.onOptionsItemSelected(item);

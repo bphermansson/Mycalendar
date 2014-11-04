@@ -31,7 +31,18 @@
         </activity>
         <activity
             android:name=".settings"
-            android:label="Settings"
+            android:label="Inställningar"
+            android:parentActivityName=".Main" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Main"
+                />
+            >
+        </activity>
+        <activity
+            android:name=".help"
+            android:label="Hjälp"
             android:parentActivityName=".Main" >
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
