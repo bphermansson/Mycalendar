@@ -34,7 +34,6 @@ public class Main extends Activity {
             CalendarContract.Events.TITLE,
             CalendarContract.Events.DTSTART,
             CalendarContract.Events.DTEND
-
     };
     // The indices for the projection array above.
     private static final int PROJECTION_ID_INDEX = 0;
