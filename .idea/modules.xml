@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Mycalendar.iml" filepath="$PROJECT_DIR$/Mycalendar.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fsk-schema.iml" filepath="$PROJECT_DIR$/fsk-schema.iml" />
       <module fileurl="file://$PROJECT_DIR$/fskschema.iml" filepath="$PROJECT_DIR$/fskschema.iml" />
     </modules>
   </component>
