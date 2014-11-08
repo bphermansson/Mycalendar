@@ -1,25 +1,18 @@
-package nu.paheco.patrik.mycalendar;
+package nu.paheco.patrik.fskschema;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintManager;
-import android.provider.SyncStateContract;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 /**

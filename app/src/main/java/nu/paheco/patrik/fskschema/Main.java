@@ -1,15 +1,12 @@
-package nu.paheco.patrik.mycalendar;
+package nu.paheco.patrik.fskschema;
 
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
-import android.provider.Settings;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.HapticFeedbackConstants;
@@ -21,10 +18,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 

@@ -1,10 +1,9 @@
-package nu.paheco.patrik.mycalendar;
+package nu.paheco.patrik.fskschema;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
-import android.widget.TextView;
 
 /**
  * Created by user on 10/27/14.

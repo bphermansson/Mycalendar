@@ -1,4 +1,4 @@
-package nu.paheco.patrik.mycalendar;
+package nu.paheco.patrik.fskschema;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

@@ -1,7 +1,4 @@
-package nu.paheco.patrik.mycalendar;
-
-import java.util.ArrayList;
-import java.util.List;
+package nu.paheco.patrik.fskschema;
 
 /**
  * Created by user on 10/12/14.
